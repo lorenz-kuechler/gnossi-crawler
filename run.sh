@@ -3,6 +3,9 @@
 set -eu
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-PYTHON="$HOME/.pyenv/versions/env-gnossi-crawler/bin/python"
+
+# Only pull PYTHON_BIN out of .env (not a full source) since other values in
+# there, like SMTP_PASSWORD, may contain shell-special characters.
+PYTHON="$(grep -E '^PYTHON_BIN=' "$SCRIPT_DIR/.env" | head -n1 | cut -d '=' -f2-)"
 
 exec "$PYTHON" "$SCRIPT_DIR/crawler.py"
